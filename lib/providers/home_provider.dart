@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../core/services/sound_service.dart';
 import '../core/services/storage_service.dart';
+import '../core/services/background_service.dart';
 import '../core/utils/constants.dart';
 
 class HomeProvider extends ChangeNotifier {
@@ -29,8 +30,14 @@ class HomeProvider extends ChangeNotifier {
   Future<void> toggleEnabled() async {
     _isEnabled = !_isEnabled;
     await StorageService.setIsEnabled(_isEnabled);
-    if (!_isEnabled) {
-      // Restore normal mode when disabled
+    if (_isEnabled) {
+      // When enabling, immediately run a schedule check and sync mode
+      try {
+        await BackgroundService.runImmediateCheck();
+      } catch (_) {}
+      await refreshCurrentMode();
+    } else {
+      // When disabling, restore normal mode
       await SoundService.setNormalMode();
       _currentMode = AppConstants.modeNormal;
     }

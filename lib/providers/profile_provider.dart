@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../models/profile_model.dart';
 import '../core/services/storage_service.dart';
+import '../core/services/background_service.dart';
 import '../core/utils/time_utils.dart';
 
 class ProfileProvider extends ChangeNotifier {
@@ -63,6 +64,10 @@ class ProfileProvider extends ChangeNotifier {
     );
     _profiles.add(profile);
     await _save();
+    // Re-evaluate schedules immediately when profiles change
+    try {
+      await BackgroundService.runImmediateCheck();
+    } catch (_) {}
     notifyListeners();
   }
 
@@ -72,6 +77,9 @@ class ProfileProvider extends ChangeNotifier {
     if (index == -1) return;
     _profiles[index] = updated;
     await _save();
+    try {
+      await BackgroundService.runImmediateCheck();
+    } catch (_) {}
     notifyListeners();
   }
 
@@ -83,6 +91,9 @@ class ProfileProvider extends ChangeNotifier {
       isEnabled: !_profiles[index].isEnabled,
     );
     await _save();
+    try {
+      await BackgroundService.runImmediateCheck();
+    } catch (_) {}
     notifyListeners();
   }
 
@@ -90,6 +101,9 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> deleteProfile(String id) async {
     _profiles.removeWhere((p) => p.id == id);
     await _save();
+    try {
+      await BackgroundService.runImmediateCheck();
+    } catch (_) {}
     notifyListeners();
   }
 
