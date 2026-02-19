@@ -86,9 +86,9 @@ class BackgroundService {
       tag: AppConstants.bgTaskTag,
       frequency: const Duration(minutes: 15),
       constraints: Constraints(
-        networkType: NetworkType.not_required,
+        networkType: NetworkType.notRequired,
       ),
-      existingWorkPolicy: ExistingWorkPolicy.replace,
+      existingWorkPolicy: ExistingPeriodicWorkPolicy.replace,
       backoffPolicy: BackoffPolicy.linear,
       backoffPolicyDelay: const Duration(minutes: 5),
     );
@@ -105,7 +105,7 @@ class BackgroundService {
       '${AppConstants.bgTaskName}_immediate',
       AppConstants.bgTaskName,
       tag: AppConstants.bgTaskTag,
-      constraints: Constraints(networkType: NetworkType.not_required),
+      constraints: Constraints(networkType: NetworkType.notRequired),
     );
   }
 }
