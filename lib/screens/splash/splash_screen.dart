@@ -48,12 +48,11 @@ class _SplashScreenState extends State<SplashScreen>
       // Ignore notification init errors on startup
     }
 
+    // Fire-and-forget background task registration so splash isn't blocked
     try {
-      // Fire-and-forget background task registration so splash isn't blocked
-      BackgroundService.registerPeriodicTask();
-    } catch (_) {
-      // Ignore background registration errors on startup
-    }
+      // Ignore any async errors from Workmanager on unsupported platforms / misconfig
+      BackgroundService.registerPeriodicTask().catchError((_) {});
+    } catch (_) {}
 
     // Wait for animation
     await Future.delayed(const Duration(milliseconds: 1500));

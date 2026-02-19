@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Local embedded JDK (very large, do not commit)
+/android/jdk17/
