@@ -41,12 +41,22 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _initialize() async {
-    // Initialize services
-    await NotificationService.init();
-    await BackgroundService.registerPeriodicTask();
+    // Initialize services (do not block navigation if they fail)
+    try {
+      await NotificationService.init();
+    } catch (_) {
+      // Ignore notification init errors on startup
+    }
+
+    try {
+      // Fire-and-forget background task registration so splash isn't blocked
+      BackgroundService.registerPeriodicTask();
+    } catch (_) {
+      // Ignore background registration errors on startup
+    }
 
     // Wait for animation
-    await Future.delayed(const Duration(milliseconds: 2000));
+    await Future.delayed(const Duration(milliseconds: 1500));
 
     if (!mounted) return;
 
