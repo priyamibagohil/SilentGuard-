@@ -121,7 +121,7 @@ lib/
 
 ---
 
-Developed with ❤️ and Engineering Excellence by **Priyam Ibagohil**.  
+Developed with ❤️ and Engineering Excellence by **Priyamiba gohil**.  
 *Focused Technology for Focused People.*
 
 
